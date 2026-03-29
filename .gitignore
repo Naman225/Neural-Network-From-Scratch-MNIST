@@ -1,0 +1,60 @@
+# 🔥 Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+
+# Virtual Environment
+
+venv/
+env/
+ENV/
+
+# Jupyter Notebook checkpoints
+
+.ipynb_checkpoints/
+
+# VS Code
+
+.vscode/
+
+# MacOS
+
+.DS_Store
+
+# Logs
+
+*.log
+
+# Environment variables
+
+.env
+
+# Build / dist
+
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+
+*.tmp
+*.swp
+
+# PyTorch / TensorFlow checkpoints (optional)
+
+*.pt
+*.pth
+*.ckpt
+
+# Data files (optional - if large)
+
+*.csv
+*.zip
+
+data/
+*.csv
+
+data/raw/
