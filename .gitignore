@@ -54,7 +54,4 @@ dist/
 *.csv
 *.zip
 
-data/
-*.csv
-
-data/raw/
+error_prone_images/
