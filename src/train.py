@@ -22,7 +22,7 @@ class TrainingModel:
             training.update_parameters(grads)
             if i % 100 == 0:
                 print(f"Iteration {i}, Cost: {cost}")
-            
+        
         preds=training.predict(X_test)
         evaluate = Evaluate()
         accuracy =evaluate.accuracy(preds,y_test)
@@ -30,6 +30,11 @@ class TrainingModel:
         print("Metrics for accuracy is :",accuracy)
         print("Metrics for confusion is :",confusion)
 
+        error =evaluate.get_wrong_predictions(preds,y_test)
+        error_img=evaluate.analyze_patterns(error,X_test)
+        evaluate.visualize_error(error_img)
+        error_imgs = evaluate.add_confidence(AL,error_img)
+        evaluate.visualize_error_with_confidence(error_imgs)
             
 
 if __name__ =='__main__':
