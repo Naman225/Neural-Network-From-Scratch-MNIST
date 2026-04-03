@@ -11,5 +11,6 @@ def save_object(path,obj):
 def load_path(path):
     with open(path,'rb'):
         obj = pickle.load()
+        return obj
             
     
