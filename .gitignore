@@ -1,57 +1,24 @@
-# 🔥 Python
-
-**pycache**/
+# Python cache
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.py[cod]
 
 # Virtual Environment
-
 venv/
 env/
 ENV/
 
-# Jupyter Notebook checkpoints
-
+# Jupyter Notebook
 .ipynb_checkpoints/
 
 # VS Code
-
 .vscode/
 
 # MacOS
-
 .DS_Store
 
-# Logs
-
-*.log
-
-# Environment variables
-
-.env
-
-# Build / dist
-
-build/
-dist/
-*.egg-info/
-
-# Temporary files
-
-*.tmp
-*.swp
-
-# PyTorch / TensorFlow checkpoints (optional)
-
-*.pt
-*.pth
-*.ckpt
-
-# Data files (optional - if large)
-
-*.csv
-*.zip
-
+# Artifacts (VERY IMPORTANT for ML)
+artifacts/
 error_prone_images/

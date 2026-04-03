@@ -89,4 +89,4 @@ class Evaluate:
             filename = f"{folder}/error_{i}_pred_{pred}_true_{true}_conf_{confidence:.2f}.png"
             plt.savefig(filename)
             plt.close()
-
+        

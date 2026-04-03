@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-from data_ingestion import DataIngestion
+from src.components.data_ingestion import DataIngestion
 
 
 class DataTransformation:
     def __init__(self):
         pass
-    def preprocess(self ,train_df , test_df):       
+    def preprocess(self ,train_df , test_df,epsilon=0.03):       
         X_train = train_df.drop('label', axis=1).values / 255
         y_train = train_df['label']
         y_train = pd.get_dummies(y_train)
@@ -19,6 +19,9 @@ class DataTransformation:
         y_test  = y_test.reindex(columns=range(10), fill_value=0)
         y_train = y_train.values.T
         y_test  = y_test.values.T
+        num_classes = y_train.shape[0]
+        y_train = y_train * (1 - epsilon) + epsilon / num_classes
+        y_test = y_test * (1 - epsilon) + epsilon / num_classes
         X_train=X_train.T
         X_test=X_test.T
         

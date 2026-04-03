@@ -1,9 +1,10 @@
 import numpy as np
 class ModelTraining:
-    def __init__(self,layers,learning_rate=0.2):
+    def __init__(self,layers,lambda_=0.05):
         self.layers=layers
-        self.learning_rate=learning_rate
         self.params={}
+        self.lambda_ = lambda_
+    
     def initialize_parameters(self):
         L=len(self.layers)
         for l in range(1,L):
@@ -11,6 +12,20 @@ class ModelTraining:
             self.params['b' +str(l)]=np.zeros((self.layers[l],1))
             
         return self.params
+    
+    def create_mini_batches(self,X,y,batch_size):
+        mini_batches = []
+        m=X.shape[1]
+        shuffle = np.random.permutation(m)
+        X_shuffle = X[:,shuffle]
+        y_shuffle = y[:,shuffle]
+
+        for i in range(0,m,batch_size):
+            X_batches = X_shuffle[:,i: i+batch_size]
+            y_batches = y_shuffle[:,i: i+batch_size]
+            mini_batches.append((X_batches,y_batches))
+
+        return mini_batches
 
     def softmax(self,Z):
         Z = Z - np.max(Z,axis=0,keepdims=True)
@@ -72,6 +87,12 @@ class ModelTraining:
         m=y.shape[1]
         costs = -(1/m) * np.sum(y * np.log(AL))
         cost = np.squeeze(costs)
+        l2_sum=0
+        L = len(self.layers) -1
+        for l in range(1,L+1):
+            W=self.params['W'+str(l)]
+            l2_sum += np.sum(W**2)
+        cost += (self.lambda_ / (2*m)) * l2_sum
         return cost
 
     # def sigmoid_backward(self,dA ,cache):
@@ -91,7 +112,7 @@ class ModelTraining:
         A_prev,W,b=cache
         m=A_prev.shape[1]
 
-        dW = (1/m) * np.dot(dZ,A_prev.T)
+        dW = (1/m) * np.dot(dZ,A_prev.T) +(self.lambda_/m) * W
         db = (1/m) *np.sum(dZ,axis=1,keepdims=True)
         dA_prev = np.dot(W.T,dZ)
         return dA_prev,dW,db
@@ -124,16 +145,24 @@ class ModelTraining:
           
         return grads
     
-    def update_parameters(self,grads):
+    def update_parameters(self,grads,learning_rate):
         L = len(self.params) //2
+        
         for l in range(1,L+1):
-            self.params['W'+str(l)]=self.params['W'+str(l)]-self.learning_rate*grads['dW' + str(l)]
-            self.params['b'+str(l)]=self.params['b'+str(l)]-self.learning_rate*grads['db' + str(l)]
+            self.params['W'+str(l)]=self.params['W'+str(l)]-learning_rate*grads['dW' + str(l)]
+            self.params['b'+str(l)]=self.params['b'+str(l)]-learning_rate*grads['db' + str(l)]
         return self.params
-    
+            
     def predict(self,X):
         AL ,_ =self.full_linear_activation_forward(X)
         print("AL is ",AL.min(), AL.max())
         predictions = np.argmax(AL,axis=0)
-        return predictions
+        return predictions,AL
+    
+    def retrieve_data(self):
+        model_data={
+            "params":self.params,
+            "layers":self.layers
+        }
+        return model_data
     
