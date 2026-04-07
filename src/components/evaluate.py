@@ -27,7 +27,7 @@ class Evaluate:
     
     def get_wrong_predictions(self,preds,y):
         preds = preds.flatten()
-        y=y.flatten()
+        y = np.argmax(y,axis=0).flatten()
         wrong_predictions= []
         index = len(preds)
         for i in range(index):

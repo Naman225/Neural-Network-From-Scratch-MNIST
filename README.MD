@@ -38,11 +38,18 @@ This project demonstrates a deep understanding of **forward propagation, backpro
 ```
 src/
 │
-├── train.py                 # Training loop
-├── model.py                 # Neural network (forward + backward)
-├── evaluate.py              # Metrics & confusion matrix
-├── data_ingestion.py        # Data loading
-├── data_transformation.py   # Preprocessing & encoding
+├── main.py                          # Entrypoint for training
+├── components/
+│   ├── data_ingestion.py            # Kaggle MNIST download + loading
+│   ├── data_transformation.py       # Normalization + one-hot encoding
+│   ├── model_trainer.py             # Neural network forward/backward/update
+│   └── evaluate.py                  # Accuracy, confusion matrix, error analysis
+├── pipeline/
+│   ├── train_pipeline.py            # End-to-end training + evaluation workflow
+│   └── prediction_pipeline.py       # Single-sample prediction from saved model
+└── utils/
+    ├── logger.py                    # Logging setup
+    └── save_load.py                 # Pickle save/load helpers
 ```
 
 ---
@@ -72,16 +79,10 @@ Output Layer:     10 (Softmax)
 
 ## 📦 Dataset
 
-The dataset is not included due to GitHub size limits.
-
-Download MNIST (CSV format) from:
+The training pipeline downloads MNIST CSV automatically using `kagglehub`:
 https://www.kaggle.com/datasets/oddrationale/mnist-in-csv
 
-Place the files in:
-
-```
-data/raw/
-```
+If needed, you can still download manually and point ingestion to that directory.
 
 ---
 
@@ -92,7 +93,7 @@ git clone https://github.com/Naman225/Neural-Network-From-Scratch-MNIST.git
 cd Neural-Network-From-Scratch-MNIST
 
 pip install -r requirements.txt
-python src/train.py
+python3 src/main.py
 ```
 
 ---

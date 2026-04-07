@@ -9,8 +9,8 @@ def save_object(path,obj):
         pickle.dump(obj,file)
 
 def load_path(path):
-    with open(path,'rb'):
-        obj = pickle.load()
+    with open(path,'rb') as file:
+        obj = pickle.load(file)
         return obj
             
     

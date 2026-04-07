@@ -28,7 +28,10 @@ class DataTransformation:
         X_train=X_train.T
         X_test=X_test.T
         
-        logger.info(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
+        logger.info(
+            f"Shapes -> X_train: {X_train.shape}, y_train: {y_train.shape}, "
+            f"X_test: {X_test.shape}, y_test: {y_test.shape}"
+        )
 
         return X_train,y_train,X_test,y_test
 
