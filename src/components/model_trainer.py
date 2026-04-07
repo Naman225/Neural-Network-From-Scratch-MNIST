@@ -1,4 +1,5 @@
 import numpy as np
+
 class ModelTraining:
     def __init__(self,layers,lambda_=0.05):
         self.layers=layers
@@ -155,7 +156,7 @@ class ModelTraining:
             
     def predict(self,X):
         AL ,_ =self.full_linear_activation_forward(X)
-        print("AL is ",AL.min(), AL.max())
+        
         predictions = np.argmax(AL,axis=0)
         return predictions,AL
     

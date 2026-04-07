@@ -1,11 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import seaborn as sns
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 class Evaluate:
     def __init__(self):
         pass
     def accuracy(self,preds,y):
-        print("unique preds is :",np.unique(preds))
+        logger.info(f"unique preds is :{np.unique(preds)}")
         y = np.argmax(y,axis=0)
         assert preds.shape == y.shape
         accuracy = np.mean(preds == y)       
@@ -53,6 +57,18 @@ class Evaluate:
         folder_name = 'error_prone_images'
         os.makedirs(folder_name ,exist_ok=True)
         return folder_name
+
+    def visualize_confusion_matrix(self,confusion_df):
+        plt.figure(figsize=(8,6))
+        sns.heatmap(confusion_df, annot=True, fmt='.0f', cmap='Blues')
+        plt.ylabel('Actual')
+        plt.xlabel('Predicted')
+        plt.title('Confusion Matrix Heatmap')
+        path='error_prone_images/confusion_matrix_image'
+        os.makedirs(path,exist_ok=True)
+        save_path = os.path.join(path,'confusion_matrix.png')
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.show()
 
 
     def visualize_error(self,error_img,num_samples=10):

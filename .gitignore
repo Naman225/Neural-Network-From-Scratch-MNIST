@@ -22,3 +22,4 @@ ENV/
 # Artifacts (VERY IMPORTANT for ML)
 artifacts/
 error_prone_images/
+logs/

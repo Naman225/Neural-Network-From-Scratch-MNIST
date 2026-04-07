@@ -1,6 +1,9 @@
 import pandas as pd
 import kagglehub
 import os
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 class DataIngestion:
     def __init__(self):
         pass
@@ -11,6 +14,7 @@ class DataIngestion:
         return path
     
     def load_data(self,path):
+        logger.info("Data ingestion started")
         print(f"Checking directory: {path}")
         print(f"Files found: {os.listdir(path)}")
         if os.path.isdir(path):
@@ -27,7 +31,7 @@ class DataIngestion:
         else:
             raise Exception("Dataset path does not exist or download failed")
         return train_df, test_df
-            
+        
     def run(self): 
         path = self.download_data()
         train_df , test_df = self.load_data(path)
