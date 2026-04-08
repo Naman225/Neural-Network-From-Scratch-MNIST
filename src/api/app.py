@@ -13,11 +13,24 @@ from src.config.config_loader import config
 logger = get_logger(__name__)
 
 app =FastAPI()
-predictor = Prediction()
+predictor = None
 app.mount("/static", StaticFiles(directory="src/frontend"), name="static")
 
 class InputData(BaseModel):
     data : list[float] 
+
+def get_predictor():
+    global predictor
+    if predictor is None:
+        try:
+            predictor = Prediction()
+        except Exception as e:
+            logger.error(f"Failed to initialize predictor: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="Model is not available on server. Please deploy artifacts/model.pkl."
+            )
+    return predictor
 
 @app.get('/',response_class=HTMLResponse)
 def home():
@@ -26,15 +39,23 @@ def home():
 
 @app.get('/health')
 def health():
-    return {"status": "ok"}
+    model_ready = True
+    try:
+        get_predictor()
+    except HTTPException:
+        model_ready = False
+    return {"status": "ok", "model_ready": model_ready}
 
 @app.post('/predict')
 def predict(input_data : InputData):
     logger.info('Request recieved')
     try:
-        result = predictor.predict(input_data.data)
+        active_predictor = get_predictor()
+        result = active_predictor.predict(input_data.data)
         logger.info("Prediction Done")
         return {"prediction" : result}
+    except HTTPException as e:
+        raise e
     except Exception as e:
         logger.error(f"Error occured : {e}")
         return {"error" : str(e)}
@@ -50,6 +71,7 @@ async def predict_image(file :UploadFile = File()):
         )
         
     try:
+        active_predictor = get_predictor()
         data = await file.read()
         img = Image.open(io.BytesIO(data))
         logger.info("Image Received")
@@ -69,7 +91,7 @@ async def predict_image(file :UploadFile = File()):
         input_vector = img_np.flatten().reshape(784,1) / config["image"]["normalization"]
         
         logger.info("Preprocessing Done")
-        probs = predictor.predict_proba(input_vector)
+        probs = active_predictor.predict_proba(input_vector)
 
         prediction = int(np.argmax(probs))
         confidence = float(np.max(probs))
@@ -92,7 +114,7 @@ async def predict_image(file :UploadFile = File()):
 
 
 if __name__ == "__main__":
-    uvicorn.run("api.app:app" , port=8000 , reload=True)
+    uvicorn.run("src.api.app:app" , port=8000 , reload=True)
 
 
 

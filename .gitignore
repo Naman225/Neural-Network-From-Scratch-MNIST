@@ -19,7 +19,8 @@ ENV/
 # MacOS
 .DS_Store
 
-# Artifacts (VERY IMPORTANT for ML)
-artifacts/
+# Artifacts (ignore all except deploy model)
+artifacts/*
+!artifacts/model.pkl
 error_prone_images/
 logs/
