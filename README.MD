@@ -2,6 +2,10 @@
 
 A NumPy-based, from-scratch implementation of a multi-layer neural network for handwritten digit recognition on MNIST, packaged with a FastAPI backend and a simple web frontend for image-based inference.
 
+## Live Demo
+
+Try the deployed app here: [neural-network-from-scratch-mnist.onrender.com](https://neural-network-from-scratch-mnist.onrender.com)
+
 ## Highlights
 
 - End-to-end neural network implementation without TensorFlow/PyTorch
@@ -94,33 +98,6 @@ Runtime settings are in `src/config/config.yaml`, including:
 - normalization factor
 - inversion threshold
 - allowed upload MIME types
-
-## Free Deployment Options
-
-### Recommended: Render (free web service tier)
-
-Best fit for this project because it supports Python web apps with minimal setup.
-
-1. Push code to GitHub
-2. Create a new **Web Service** on Render
-3. Build command:
-   - `pip install -r requirements.txt`
-4. Start command:
-   - `uvicorn src.api.app:app --host 0.0.0.0 --port $PORT`
-5. Add model artifacts to repo or fetch them at startup
-
-### Good alternatives
-
-- **Railway**: simple UX, often good free trial credits
-- **Fly.io**: powerful but a bit more setup-heavy
-- **Hugging Face Spaces (Docker)**: good for ML demos, especially public showcases
-
-## Notes for Production
-
-- Persist model artifacts in a stable location (object storage or baked into image)
-- Add request validation limits (file size/type)
-- Add health checks and structured logging
-- Consider background retraining/versioned model artifacts
 
 ## Roadmap
 
