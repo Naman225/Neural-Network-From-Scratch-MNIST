@@ -5,3 +5,6 @@ seaborn
 kagglehub
 fastapi
 uvicorn
+pillow
+pyyaml
+python-multipart

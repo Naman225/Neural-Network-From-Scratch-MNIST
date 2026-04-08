@@ -23,6 +23,11 @@ class InputData(BaseModel):
 def home():
     with open("src/frontend/index.html", "r") as f:
         return f.read()
+
+@app.get('/health')
+def health():
+    return {"status": "ok"}
+
 @app.post('/predict')
 def predict(input_data : InputData):
     logger.info('Request recieved')
