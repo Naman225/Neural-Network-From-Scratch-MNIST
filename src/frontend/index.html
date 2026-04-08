@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/script.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Image Prediction</title>
+</head>
+<body>
+
+    <div class="card">
+    <h2>🧠 Image Predictor</h2>
+
+    <input type="file" id="fileInput" onchange="previewImage()"><br>
+
+    <button onclick="uploadImage()">Predict</button>
+
+    <p id="loading"></p>
+    <h3 id="result"></h3>
+
+    <div id="top3"></div>
+
+    <img id="preview">
+    </div>
+
+
+    
+
+</body>
+</html>

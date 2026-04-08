@@ -1,0 +1,12 @@
+image:
+  size: [28, 28]
+  normalization: 255.0
+  inversion_threshold: 127
+
+file:
+  allowed_types:
+    - image/png
+    - image/jpeg
+    - image/jpg
+
+debug: true

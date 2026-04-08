@@ -1,0 +1,93 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #dfe9f3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main Card */
+.card {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* Title */
+.card h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* File Input */
+input[type="file"] {
+    margin-bottom: 20px;
+}
+
+/* Button */
+button {
+    padding: 12px 25px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #16a34a;
+    transform: scale(1.05);
+}
+
+/* Result */
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #222;
+}
+
+/* Loading */
+#loading {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Image Preview */
+img {
+    margin-top: 20px;
+    max-width: 220px;
+    border-radius: 10px;
+    display: none;
+}
+#top3 {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.bar-container {
+    margin: 8px 0;
+}
+
+.bar-label {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.bar {
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #22c55e;
+    width: 0%;
+}

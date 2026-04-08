@@ -1,128 +1,134 @@
-# 🧠 Neural Network From Scratch (MNIST)
+# Neural Network From Scratch (MNIST)
 
-A fully vectorized implementation of a **multi-layer neural network built from scratch using NumPy**, trained on the MNIST dataset for handwritten digit classification.
+A NumPy-based, from-scratch implementation of a multi-layer neural network for handwritten digit recognition on MNIST, packaged with a FastAPI backend and a simple web frontend for image-based inference.
 
-This project demonstrates a deep understanding of **forward propagation, backpropagation, and multi-class classification** without using deep learning frameworks like TensorFlow or PyTorch.
+## Highlights
 
----
+- End-to-end neural network implementation without TensorFlow/PyTorch
+- Vectorized forward and backward propagation
+- ReLU + Softmax architecture with categorical cross-entropy loss
+- Training and evaluation pipeline with artifact-based model loading
+- FastAPI inference API for uploaded digit images
+- Frontend UI showing prediction confidence and top-3 classes
 
-## 🚀 Key Features
+## Tech Stack
 
-* Neural network implemented **from scratch (NumPy only)**
-* Multi-layer architecture with **ReLU + Softmax**
-* **Categorical Cross Entropy Loss**
-* Efficient **vectorized forward & backward propagation**
-* Gradient descent optimization
-* Model evaluation using:
+- Python, NumPy, Pandas
+- FastAPI, Uvicorn
+- HTML, CSS, JavaScript
+- Pickle-based model artifact loading
 
-  * Accuracy
-  * Confusion Matrix
-* Error analysis via **wrong prediction inspection**
+## Project Structure
 
----
-
-## 📊 Results
-
-* **Test Accuracy:** ~96–97%
-* Stable training convergence
-* Identified common misclassifications:
-
-  * 5 ↔ 3
-  * 4 ↔ 9
-  * 7 ↔ 2
-
----
-
-## 🏗️ Project Structure
-
-```
+```text
 src/
-│
-├── main.py                          # Entrypoint for training
+├── api/
+│   └── app.py                    # FastAPI app and prediction endpoints
 ├── components/
-│   ├── data_ingestion.py            # Kaggle MNIST download + loading
-│   ├── data_transformation.py       # Normalization + one-hot encoding
-│   ├── model_trainer.py             # Neural network forward/backward/update
-│   └── evaluate.py                  # Accuracy, confusion matrix, error analysis
+│   ├── data_ingestion.py         # Dataset loading
+│   ├── data_transformation.py    # Normalization / preprocessing
+│   ├── model_trainer.py          # Network training logic
+│   └── evaluate.py               # Metrics and error analysis
+├── config/
+│   ├── config.yaml               # Image/file/runtime settings
+│   └── config_loader.py          # YAML config loader
+├── frontend/
+│   ├── index.html                # UI
+│   ├── script.js                 # Upload and prediction rendering
+│   └── style.css                 # Styling
 ├── pipeline/
-│   ├── train_pipeline.py            # End-to-end training + evaluation workflow
-│   └── prediction_pipeline.py       # Single-sample prediction from saved model
+│   ├── train_pipeline.py         # Training workflow
+│   └── prediction_pipeline.py    # Model loading + inference wrapper
 └── utils/
-    ├── logger.py                    # Logging setup
-    └── save_load.py                 # Pickle save/load helpers
+    ├── logger.py
+    └── save_load.py
 ```
 
----
+## Model Overview
 
-## 🧠 Model Architecture
+- Input: `28x28` grayscale image (flattened to `784`)
+- Hidden layers: ReLU activations
+- Output: `10` classes (digits `0-9`) via Softmax
+- Objective: categorical cross-entropy minimization with gradient descent
 
-```
-Input Layer:      784 (28×28 image)
-Hidden Layer 1:   ReLU
-Hidden Layer 2:   ReLU
-Output Layer:     10 (Softmax)
-```
+## API Endpoints
 
----
+- `GET /` - serves the frontend
+- `POST /predict` - predicts from numeric vector input
+- `POST /predict-image` - predicts from uploaded image and returns:
+  - `prediction` (top class)
+  - `confidence` (top class probability)
+  - `top3` (top-3 class probabilities)
 
-## ⚙️ Training Details
-
-* Loss Function: **Categorical Cross Entropy**
-* Optimization: **Gradient Descent**
-* Backprop Simplification:
-
-  ```
-  dZ = AL - Y
-  ```
-
----
-
-## 📦 Dataset
-
-The training pipeline downloads MNIST CSV automatically using `kagglehub`:
-https://www.kaggle.com/datasets/oddrationale/mnist-in-csv
-
-If needed, you can still download manually and point ingestion to that directory.
-
----
-
-## ▶️ How to Run
+## Local Setup
 
 ```bash
 git clone https://github.com/Naman225/Neural-Network-From-Scratch-MNIST.git
 cd Neural-Network-From-Scratch-MNIST
-
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+## Run
+
+### 1) Train (optional, if artifact is missing)
+
+```bash
 python3 src/main.py
 ```
 
----
+### 2) Start API + frontend
 
-## 📈 Future Improvements
+```bash
+uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+```
 
-* Mini-batch gradient descent
-* Learning rate tuning / scheduling
-* Deeper architectures
-* Convolutional Neural Networks (CNNs)
-* Visualization of training curves
+Open: `http://127.0.0.1:8000`
 
----
+## Configuration
 
-## 💡 Key Learnings
+Runtime settings are in `src/config/config.yaml`, including:
 
-* Built a neural network pipeline from scratch
-* Understood and implemented backpropagation mathematically
-* Debugged model using confusion matrix and error analysis
-* Improved performance through systematic experimentation
+- image size
+- normalization factor
+- inversion threshold
+- allowed upload MIME types
 
----
+## Free Deployment Options
 
-## 👨‍💻 Author
+### Recommended: Render (free web service tier)
 
-**Naman Tiwari**
+Best fit for this project because it supports Python web apps with minimal setup.
 
----
+1. Push code to GitHub
+2. Create a new **Web Service** on Render
+3. Build command:
+   - `pip install -r requirements.txt`
+4. Start command:
+   - `uvicorn src.api.app:app --host 0.0.0.0 --port $PORT`
+5. Add model artifacts to repo or fetch them at startup
 
-## ⭐ If you found this useful
+### Good alternatives
 
-Consider giving the repository a star ⭐
+- **Railway**: simple UX, often good free trial credits
+- **Fly.io**: powerful but a bit more setup-heavy
+- **Hugging Face Spaces (Docker)**: good for ML demos, especially public showcases
+
+## Notes for Production
+
+- Persist model artifacts in a stable location (object storage or baked into image)
+- Add request validation limits (file size/type)
+- Add health checks and structured logging
+- Consider background retraining/versioned model artifacts
+
+## Roadmap
+
+- Mini-batch training and learning-rate scheduling
+- Better experiment tracking
+- Optional CNN implementation for higher accuracy
+- More robust frontend error handling and UX improvements
+
+## Author
+
+Naman Tiwari

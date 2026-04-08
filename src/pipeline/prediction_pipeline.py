@@ -52,12 +52,27 @@ class Prediction:
         
 
         return data
-    def predict(self,X):
-        logger.info("Prediction started")
+    def predict_proba(self, X):
+        logger.info("Predict_proba started")
+
         processed_data = self._preprocess_input(X)
-        prediction,_ =self.model.predict(processed_data)
-        logger.info(f"Prediction result: {prediction[0]}")
-        return int(prediction[0])
+
+        _, output = self.model.predict(processed_data)
+
+
+        probs = output
+
+        probs = probs.flatten()
+
+        logger.info(f"Probabilities: {probs}")
+
+        return probs
+    def predict(self, X):
+        probs = self.predict_proba(X)
+        prediction = int(np.argmax(probs))
+        logger.info(f"Prediction result: {prediction}")
+        return prediction
+    
 
         
 
